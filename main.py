@@ -2,10 +2,13 @@ import requests
 from send_email import send_emailll
 
 api_key = "39562f0f08d64611b7691cc765bab3bd"
+topic = "tesla"
 
-url = ("https://newsapi.org/v2/everything?q=tesla&"
+url = ("https://newsapi.org/v2/everything?"
+       f"q={topic}&"
        "sortBy=publishedAt&"
-       "apiKey=39562f0f08d64611b7691cc765bab3bd")
+       "apiKey=39562f0f08d64611b7691cc765bab3bd&"
+       "language=ro")
 
 # Make request
 request = requests.get(url)
@@ -20,8 +23,8 @@ content = request.json()
 # print(content)
 # print(content["articles"])
 
-content_email = ""
-for article in content["articles"]:
+content_email = "Subject: Stirile zilei" + "\n"
+for article in content["articles"][:20]:
 #   print(article["title"])
 #   print(article["description"])
 
@@ -29,7 +32,9 @@ for article in content["articles"]:
 #    content_email = article["title"] + "\n" + article["description"]
 
     if article["title"] is not None:
-        content_email = content_email + article["title"] + "\n" + article["description"] + 2*"\n"
+        content_email = content_email + article["title"] + "\n" \
+                        + article["description"] + "\n" \
+                        + article["url"] + 2*"\n"
 
 #print(content_email)
 
